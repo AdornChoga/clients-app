@@ -7,5 +7,6 @@ router.get('/', ClientsApi.fetchClients);
 router.get('/:id', ClientsApi.fetchClient);
 router.post('/', ClientsApi.createClient);
 router.patch('/:id', ClientsApi.updateClient);
+router.delete('/:id', ClientsApi.deleteClient);
 
 export default router;

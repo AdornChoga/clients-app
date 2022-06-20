@@ -41,4 +41,14 @@ export default class ClientsApi {
       res.status(400).send({ error: err.message });
     }
   }
+  static async deleteClient(req, res) {
+    try {
+      const client = await Client.findByIdAndDelete(ObjectId(req.params.id));
+      if (client)
+        return res.status(200).send({ message: 'Client deleted successfully' });
+      res.status(404).send({ message: 'Client with provided id not found' });
+    } catch (err) {
+      res.status(400).send({ error: err.message });
+    }
+  }
 }
