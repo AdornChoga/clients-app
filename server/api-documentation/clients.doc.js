@@ -41,9 +41,9 @@
  *       properties:
  *         error:
  *           type: string
- *           description: Error message for a non-existing client id
+ *           description: Error message for a non-existing client
  *       example:
- *         error: The client with the specified could not be found
+ *         error: The client with the specified id could not be found
  */
 
 /**
@@ -122,7 +122,7 @@
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Confirmation of client creation
+ *                   description: Confirmation of a successfull client creation
  *               example:
  *                 message: The client was successfully created
  *       400:

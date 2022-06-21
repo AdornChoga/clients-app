@@ -16,7 +16,7 @@ export default class ProvidersApi {
       if (newProvider)
         return res
           .status(200)
-          .send({ message: 'Provider was created successfully' });
+          .send({ message: 'The provider was created successfully' });
     } catch (err) {
       res.status(400).send({ error: err.message });
     }
@@ -30,7 +30,7 @@ export default class ProvidersApi {
       if (updatedProvider)
         return res
           .status(200)
-          .send({ message: 'Provider was updated successfully' });
+          .send({ message: 'The provider was updated successfully' });
       res
         .status(404)
         .send({ error: 'The provider with the specified could not be found' });
@@ -46,7 +46,7 @@ export default class ProvidersApi {
       if (provider)
         return res
           .status(200)
-          .send({ message: 'Provider was deleted successfully' });
+          .send({ message: 'The provider was deleted successfully' });
       res
         .status(404)
         .send({
