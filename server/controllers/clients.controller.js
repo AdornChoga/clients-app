@@ -14,7 +14,9 @@ export default class ClientsApi {
     try {
       const client = await Client.findById(ObjectId(req.params.id));
       if (client) return res.status(200).send(client);
-      res.status(404).send({ error: 'Client with provided id not found.' });
+      res
+        .status(404)
+        .send({ error: 'The client with the specified could not be found' });
     } catch (err) {
       res.status(400).send({ error: err.message });
     }
@@ -23,7 +25,7 @@ export default class ClientsApi {
     try {
       const newClient = await Client.create(req.body);
       if (newClient)
-        return res.status(200).send({ message: 'Client created successfully' });
+        return res.status(200).send({ message: 'Client was created successfully' });
     } catch (err) {
       res.status(400).send({ error: err.message });
     }
@@ -35,8 +37,12 @@ export default class ClientsApi {
         req.body,
       );
       if (updatedClient)
-        return res.status(200).send({ message: 'Client updated successfully' });
-      res.status(404).send({ message: 'Client with provided id not found' });
+        return res
+          .status(200)
+          .send({ message: 'Client was updated successfully' });
+      res
+        .status(404)
+        .send({ error: 'The client with the specified could not be found' });
     } catch (err) {
       res.status(400).send({ error: err.message });
     }
@@ -45,8 +51,10 @@ export default class ClientsApi {
     try {
       const client = await Client.findByIdAndDelete(ObjectId(req.params.id));
       if (client)
-        return res.status(200).send({ message: 'Client deleted successfully' });
-      res.status(404).send({ message: 'Client with provided id not found' });
+        return res.status(200).send({ message: 'Client was deleted successfully' });
+      res
+        .status(404)
+        .send({ error: 'The client with the specified could not be found' });
     } catch (err) {
       res.status(400).send({ error: err.message });
     }
