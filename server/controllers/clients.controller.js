@@ -25,7 +25,7 @@ export default class ClientsApi {
   static async createClient(req, res) {
     try {
       const newClient = await Client.create(req.body);
-      if (newClient) return res.status(200).send(newClient);
+      if (newClient) return res.status(201).send(newClient);
     } catch (err) {
       res.status(400).send({ error: err.message });
     }

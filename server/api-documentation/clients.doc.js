@@ -33,7 +33,7 @@
  *         name: 'Client 1'
  *         email: 'client1@email.com'
  *         phone: '2483569028'
- *         providers: [{id: 1}]
+ *         providers: [{_id: '22a39d5b85c9c62b0c0dafnc'}]
  *     Client404:
  *       type: object
  *       required:
@@ -116,15 +116,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               required:
- *                 - message:
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Confirmation of a successfull client creation
- *               example:
- *                 message: The client was successfully created
+ *               $ref: '#components/schemas/Client'
  *       400:
  *          description: Error in request body
  */
