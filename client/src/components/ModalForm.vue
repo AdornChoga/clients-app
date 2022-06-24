@@ -1,0 +1,200 @@
+<script setup>
+import { ref, getCurrentInstance } from 'vue';
+import { useProviderStore } from '../stores/provider';
+import Providers from './Providers.vue';
+
+defineProps({
+  modal: {
+    type: Object,
+    required: true,
+  },
+  properties: {
+    type: Object,
+    required: true,
+  },
+});
+
+const { emit } = getCurrentInstance();
+
+const checkboxEmitter = (checkbox) => {
+  emit('toggle-provider', checkbox);
+};
+
+const providerName = ref('');
+
+const { createProvider } = useProviderStore();
+
+const addProvider = () => {
+  createProvider({
+    name: providerName.value,
+  });
+  providerName.value = '';
+};
+</script>
+<template>
+  <div
+    class="modal fade"
+    :id="modal.id"
+    tabindex="-1"
+    :aria-labelledby="`${modal.id}Label`"
+    aria-hidden="true"
+    backdrop="false"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" :id="`${modal.id}Label`">
+            {{ modal.title }}
+          </h5>
+        </div>
+        <div class="modal-body">
+          <form :id="modal.formId" @submit.prevent="$emit('submit-client')">
+            <div class="mb-3 input-container">
+              <label for="name">Name:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                v-model="properties.name"
+                required
+              />
+            </div>
+            <div class="mb-3 input-container">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                aria-describedby="emailHelp"
+                v-model="properties.email"
+                required
+              />
+            </div>
+            <div class="mb-3 input-container">
+              <label for="phoneNumber">Phone:</label>
+              <input
+                type="number"
+                class="form-control"
+                id="phoneNumber"
+                v-model="properties.phone"
+                required
+              />
+            </div>
+            <form
+              @submit.prevent="addProvider"
+              class="mb-3 input-container"
+              :id="`providers${modal.formId}`"
+            >
+              <label for="provider">Providers: </label>
+              <div>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="provider"
+                    v-model="providerName"
+                    required
+                  />
+                  <Providers
+                    @toggle-provider="checkboxEmitter"
+                    :clientProviders="properties.providers"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  :form="`providers${modal.formId}`"
+                  class="add-provider"
+                >
+                  Add Provider
+                </button>
+              </div>
+            </form>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" :form="modal.formId">
+            {{ modal.type }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.modal {
+  padding: 0 !important;
+}
+
+.modal-dialog {
+  min-width: clamp(60%, 80rem, 80%) !important;
+}
+
+.modal-title {
+  color: #35748a;
+  font-size: 2.5rem;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  width: 65%;
+  margin-inline: auto;
+  gap: 1rem;
+}
+
+label {
+  display: block;
+  text-align: right;
+  width: 20%;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.input-container input {
+  padding: 0.5em;
+  font-size: 1.4rem;
+  width: 80%;
+}
+
+.input-container > div {
+  display: flex;
+  width: 80%;
+  gap: 1rem;
+}
+
+.input-container > div > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 75%;
+}
+
+.input-container > div > div > input {
+  width: 100%;
+}
+
+.input-container:last-child > label {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+}
+
+.add-provider,
+.modal-footer > button {
+  border: solid rgb(192, 191, 191);
+  outline: none;
+  padding: 0.6rem 1em;
+  font-size: 1.3rem;
+  font-weight: 500;
+  background-color: #f3f3f3;
+  border-radius: 0.7rem;
+}
+
+.add-provider {
+  width: 25%;
+  align-self: flex-start;
+  margin-top: 0.2rem;
+}
+</style>

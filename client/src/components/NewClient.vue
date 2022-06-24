@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
 import { useClientStore } from '../stores/client';
-import ModalForm from './FormModal.vue';
+import ModalForm from './ModalForm.vue';
 
 const { createClient } = useClientStore();
 
