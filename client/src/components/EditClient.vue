@@ -1,6 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
 import { useClientStore } from '../stores/client';
+import { useProviderStore } from '../stores/provider';
 import ModalForm from './ModalForm.vue';
 
 const props = defineProps({
@@ -25,6 +26,7 @@ const properties = reactive({
 });
 
 const { updateClient, deleteClient, setClientError } = useClientStore();
+const { setProviderError } = useProviderStore();
 
 let clientProviders = props.client.providers;
 
@@ -37,6 +39,8 @@ const editClient = async () => {
   try {
     await updateClient(props.client._id, payload);
     $(`#editClientModal${props.client._id}`).modal('toggle');
+    setClientError('');
+    setProviderError('');
   } catch ({ response }) {
     const { error } = response.data;
     if (error.match('email_1 dup key')) {

@@ -17,6 +17,7 @@ defineProps({
 });
 
 const { clientError } = storeToRefs(useClientStore());
+const { setClientError } = useClientStore();
 
 const { emit } = getCurrentInstance();
 
@@ -28,13 +29,25 @@ const providerName = ref('');
 
 const { providerError } = storeToRefs(useProviderStore());
 
-const { createProvider } = useProviderStore();
+const { createProvider, setProviderError } = useProviderStore();
 
-const addProvider = () => {
-  createProvider({
-    name: providerName.value,
-  });
-  providerName.value = '';
+const addProvider = async () => {
+  try {
+    await createProvider({
+      name: providerName.value,
+    });
+    providerName.value = '';
+    setProviderError('');
+  } catch ({ response }) {
+    const { error } = response.data;
+    if (error.match('name_1 dup key')) {
+      setProviderError(
+        `Provider with the name ${providerName.value} already exists!`,
+      );
+    } else {
+      console.error(error);
+    }
+  }
 };
 </script>
 <template>

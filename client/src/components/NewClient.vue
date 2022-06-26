@@ -1,9 +1,11 @@
 <script setup>
 import { reactive } from 'vue';
 import { useClientStore } from '../stores/client';
+import { useProviderStore } from '../stores/provider';
 import ModalForm from './ModalForm.vue';
 
 const { createClient, setClientError } = useClientStore();
+const { setProviderError } = useProviderStore();
 
 let clientProviders = [];
 
@@ -46,6 +48,8 @@ const submitClient = async () => {
   try {
     await createClient(payload);
     resetInputData();
+    setProviderError('');
+    setClientError('');
     $('#newClientModal').modal('toggle');
   } catch ({ response }) {
     const { error } = response.data;

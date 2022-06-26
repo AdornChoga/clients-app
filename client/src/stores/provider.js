@@ -11,6 +11,9 @@ export const useProviderStore = defineStore({
     providerError: '',
   }),
   actions: {
+    setProviderError(error) {
+      this.providerError = error;
+    },
     async fetchProviders() {
       try {
         const { data } = await axios.get(`${baseUrl}/providers`);
@@ -28,7 +31,7 @@ export const useProviderStore = defineStore({
         if (response.status === 200)
           this.providers.push({ ...response.data, editing: false });
       } catch (error) {
-        console.error(error.message);
+        throw error;
       }
     },
     async updateProvider(payload) {
