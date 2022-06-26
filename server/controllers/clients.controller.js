@@ -51,6 +51,7 @@ export default class ClientsApi {
     }
   }
   static async deleteClient(req, res) {
+    
     try {
       const client = await Client.findByIdAndDelete(ObjectId(req.params.id));
       if (client) {
