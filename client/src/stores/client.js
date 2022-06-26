@@ -7,8 +7,12 @@ export const useClientStore = defineStore({
   id: 'client',
   state: () => ({
     clients: [],
+    clientError: '',
   }),
   actions: {
+    setClientError(error) {
+      this.clientError = error;
+    },
     async fetchClients() {
       try {
         const { data } = await axios.get(`${baseUrl}/clients`);
@@ -22,7 +26,7 @@ export const useClientStore = defineStore({
         const response = await axios.post(`${baseUrl}/clients/`, payload);
         if (response.status === 201) this.clients.push(response.data);
       } catch (error) {
-        console.error(error.message);
+        throw error;
       }
     },
     async updateClient(id, payload) {
@@ -35,7 +39,7 @@ export const useClientStore = defineStore({
           });
         }
       } catch (error) {
-        console.error(error.message);
+        throw error;
       }
     },
     async deleteClient(id) {

@@ -3,7 +3,7 @@ import { reactive } from 'vue';
 import { useClientStore } from '../stores/client';
 import ModalForm from './ModalForm.vue';
 
-const { createClient } = useClientStore();
+const { createClient, setClientError } = useClientStore();
 
 let clientProviders = [];
 
@@ -43,9 +43,18 @@ const resetInputData = () => {
 const submitClient = async () => {
   let { name, email, phone } = properties;
   const payload = { name, email, phone, providers: clientProviders };
-  await createClient(payload);
-  resetInputData();
-  $('#newClientModal').modal('toggle');
+  try {
+    await createClient(payload);
+    resetInputData();
+    $('#newClientModal').modal('toggle');
+  } catch ({ response }) {
+    const { error } = response.data;
+    if (error.match('email_1 dup key')) {
+      setClientError(`Account with the email ${email} already exists!`);
+    } else {
+      console.error(error);
+    }
+  }
 };
 </script>
 

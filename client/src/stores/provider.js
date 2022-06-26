@@ -8,6 +8,7 @@ export const useProviderStore = defineStore({
   id: 'provider',
   state: () => ({
     providers: [],
+    providerError: '',
   }),
   actions: {
     async fetchProviders() {

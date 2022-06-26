@@ -1,5 +1,7 @@
 <script setup>
+import { storeToRefs } from 'pinia';
 import { ref, getCurrentInstance } from 'vue';
+import { useClientStore } from '../stores/client';
 import { useProviderStore } from '../stores/provider';
 import Providers from './Providers.vue';
 
@@ -14,6 +16,8 @@ defineProps({
   },
 });
 
+const { clientError } = storeToRefs(useClientStore());
+
 const { emit } = getCurrentInstance();
 
 const checkboxEmitter = (checkbox) => {
@@ -21,6 +25,8 @@ const checkboxEmitter = (checkbox) => {
 };
 
 const providerName = ref('');
+
+const { providerError } = storeToRefs(useProviderStore());
 
 const { createProvider } = useProviderStore();
 
@@ -48,6 +54,8 @@ const addProvider = () => {
           </h5>
         </div>
         <div class="modal-body">
+          <p class="error-message">{{ clientError }}</p>
+          <p class="error-message">{{ providerError }}</p>
           <form :id="modal.formId" @submit.prevent="$emit('submit-client')">
             <div class="mb-3 input-container">
               <label for="name">Name:</label>
@@ -138,6 +146,16 @@ const addProvider = () => {
   min-width: clamp(60%, 80rem, 80%) !important;
 }
 
+.error-message {
+  width: 75%;
+  background-color: #da7c7e;
+  /* padding: 2rem; */
+  margin-inline: auto;
+  color: white;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
 .modal-title {
   color: #35748a;
   font-size: 2.5rem;
@@ -218,6 +236,7 @@ label {
 
 .delete-btn {
   align-self: flex-start;
+  border: none;
   background: #ec3e42;
   color: #ffff;
   margin-right: auto;

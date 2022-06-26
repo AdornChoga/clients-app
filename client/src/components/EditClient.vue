@@ -24,7 +24,7 @@ const properties = reactive({
   providers: props.client.providers,
 });
 
-const { updateClient, deleteClient } = useClientStore();
+const { updateClient, deleteClient, setClientError } = useClientStore();
 
 let clientProviders = props.client.providers;
 
@@ -34,8 +34,17 @@ const editClient = async () => {
     .filter((provider) => provider !== undefined);
   const { name, email, phone } = properties;
   const payload = { name, email, phone, providers: clientProviders };
-  await updateClient(props.client._id, payload);
-  $(`#editClientModal${props.client._id}`).modal('toggle');
+  try {
+    await updateClient(props.client._id, payload);
+    $(`#editClientModal${props.client._id}`).modal('toggle');
+  } catch ({ response }) {
+    const { error } = response.data;
+    if (error.match('email_1 dup key')) {
+      setClientError(`Account with the email ${email} already exists!`);
+    } else {
+      console.error(error);
+    }
+  }
 };
 
 const deleteCurrentClient = async () => {
