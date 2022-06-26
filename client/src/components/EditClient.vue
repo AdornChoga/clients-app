@@ -24,7 +24,7 @@ const properties = reactive({
   providers: props.client.providers,
 });
 
-const { updateClient } = useClientStore();
+const { updateClient, deleteClient } = useClientStore();
 
 let clientProviders = props.client.providers;
 
@@ -36,6 +36,12 @@ const editClient = async () => {
   const payload = { name, email, phone, providers: clientProviders };
   await updateClient(props.client._id, payload);
   $(`#editClientModal${props.client._id}`).modal('toggle');
+};
+
+const deleteCurrentClient = async () => {
+  const ClientId = props.client._id;
+  $(`#editClientModal${ClientId}`).modal('toggle');
+  await deleteClient(ClientId);
 };
 
 const toggleProvider = (checkbox) => {
@@ -58,5 +64,6 @@ const toggleProvider = (checkbox) => {
     :properties="properties"
     @toggle-provider="toggleProvider"
     @submit-client="editClient"
+    @delete-client="deleteCurrentClient"
   />
 </template>

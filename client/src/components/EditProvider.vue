@@ -22,7 +22,7 @@ const editProvider = async () => {
 <template>
   <form class="edit-provider-form" @submit.prevent="editProvider">
     <input type="text" v-model="providerName" required />
-    <button type="submit" class="btn btn-secondary">Update</button>
+    <br />
     <button
       type="button"
       class="m-3 btn btn-danger"
@@ -30,6 +30,7 @@ const editProvider = async () => {
     >
       Cancel
     </button>
+    <button type="submit" class="btn btn-secondary">Update</button>
   </form>
 </template>
 

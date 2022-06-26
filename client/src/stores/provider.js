@@ -1,58 +1,63 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import { useClientStore } from './client';
 
 const baseUrl = 'http://localhost:5000';
 
-export const useClientStore = defineStore({
-  id: 'client',
+export const useProviderStore = defineStore({
+  id: 'provider',
   state: () => ({
-    clients: [],
+    providers: [],
   }),
   actions: {
-    async fetchClients() {
+    async fetchProviders() {
       try {
-        const { data } = await axios.get(`${baseUrl}/clients`);
-        this.clients = data;
+        const { data } = await axios.get(`${baseUrl}/providers`);
+        this.providers = data.map((provider) => ({
+          ...provider,
+          editing: false,
+        }));
       } catch (error) {
         console.error(error.message);
       }
     },
-    async createClient(payload) {
+    async createProvider(payload) {
       try {
-        const response = await axios.post(`${baseUrl}/clients/`, payload);
-        if (response.status === 200) this.clients.push(response.data);
+        const response = await axios.post(`${baseUrl}/providers`, payload);
+        if (response.status === 200)
+          this.providers.push({ ...response.data, editing: false });
       } catch (error) {
         console.error(error.message);
       }
     },
-    async updateClient(id, payload) {
+    async updateProvider(payload) {
       try {
-        const response = await axios.patch(`${baseUrl}/clients/${id}`, payload);
+        const response = await axios.patch(
+          `${baseUrl}/providers/${payload._id}`,
+          payload,
+        );
         if (response.status === 200) {
-          this.clients = this.clients.map((client) => {
-            if (client._id === id) return { ...client, ...payload };
-            return client;
+          this.providers = this.providers.map((provider) => {
+            if (provider._id === payload._id) {
+              return { ...provider, ...payload };
+            }
+            return provider;
           });
         }
       } catch (error) {
         console.error(error.message);
       }
     },
-    async deleteClient(id) {
+    async deleteProvider(id) {
       try {
-        const res = await axios.delete(`${baseUrl}/clients/${id}`);
-        if (res.status === 200)
-          this.clients = this.clients.filter((client) => client._id !== id);
-      } catch (error) {
-        console.error(error.message);
-      }
-    },
-    async removeClientProvider(id) {
-      try {
-        this.clients = this.clients.map((client) => ({
-          ...client,
-          providers: client.providers.filter((provider) => provider._id !== id),
-        }));
+        const response = await axios.delete(`${baseUrl}/providers/${id}`);
+        if (response.status === 200) {
+          this.providers = this.providers.filter(
+            (provider) => provider._id !== id,
+          );
+          const { removeClientProvider } = useClientStore();
+          removeClientProvider(id);
+        }
       } catch (error) {
         console.error(error.message);
       }

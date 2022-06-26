@@ -112,6 +112,13 @@ const addProvider = () => {
           </form>
         </div>
         <div class="modal-footer">
+          <button
+            type="button"
+            class="delete-btn"
+            @click="$emit('delete-client')"
+          >
+            Delete Client
+          </button>
           <button type="button" data-bs-dismiss="modal">Cancel</button>
           <button type="submit" :form="modal.formId">
             {{ modal.type }}
@@ -183,18 +190,42 @@ label {
 
 .add-provider,
 .modal-footer > button {
-  border: solid rgb(192, 191, 191);
   outline: none;
   padding: 0.6rem 1em;
   font-size: 1.3rem;
   font-weight: 500;
-  background-color: #f3f3f3;
   border-radius: 0.7rem;
+}
+
+.add-provider,
+.modal-footer button:nth-child(2),
+.modal-footer button:nth-child(3) {
+  background-color: #f3f3f3;
+  border: solid rgb(192, 191, 191);
 }
 
 .add-provider {
   width: 25%;
   align-self: flex-start;
   margin-top: 0.2rem;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-start;
+  border-top: solid;
+}
+
+.delete-btn {
+  align-self: flex-start;
+  background: #ec3e42;
+  color: #ffff;
+  margin-right: auto;
+}
+
+@media screen and (max-width: 990px) {
+  .input-container {
+    width: 100% !important;
+  }
 }
 </style>

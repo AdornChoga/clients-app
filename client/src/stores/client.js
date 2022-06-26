@@ -20,7 +20,7 @@ export const useClientStore = defineStore({
     async createClient(payload) {
       try {
         const response = await axios.post(`${baseUrl}/clients/`, payload);
-        if (response.status === 200) this.clients.push(response.data);
+        if (response.status === 201) this.clients.push(response.data);
       } catch (error) {
         console.error(error.message);
       }
