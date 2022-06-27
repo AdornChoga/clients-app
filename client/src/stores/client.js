@@ -87,7 +87,8 @@ export const useClientStore = defineStore({
         const response = await axios.patch(`${baseUrl}/clients/${id}`, payload);
         if (response.status === 200) {
           this.clients = this.clients.map((client) => {
-            if (client._id === id) return { ...client, ...payload };
+            if (client._id === id)
+              return { ...client, ...response.data.client };
             return client;
           });
         }
