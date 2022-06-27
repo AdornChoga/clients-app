@@ -144,15 +144,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               required:
- *                 - message:
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Confirmation of a successfull client update
- *               example:
- *                 message: 'Client was updated successfully'
+ *               $ref: '#components/schemas/Client'
  *       400:
  *         description: The server returned an error
  *       404:

@@ -34,14 +34,10 @@ export default class ClientsApi {
     try {
       if (Object.keys(req.body).length === 0)
         return res.status(400).send({ error: 'Missing body in request' });
-      const updatedClient = await Client.findByIdAndUpdate(
-        ObjectId(req.params.id),
-        req.body,
-      );
+      await Client.updateOne({ _id: ObjectId(req.params.id) }, req.body);
+      const updatedClient = await Client.findById(ObjectId(req.params.id));
       if (updatedClient) {
-        return res
-          .status(200)
-          .send({ message: 'Client was updated successfully' });
+        return res.status(200).send({ client: updatedClient });
       }
       res
         .status(404)
@@ -51,7 +47,6 @@ export default class ClientsApi {
     }
   }
   static async deleteClient(req, res) {
-    
     try {
       const client = await Client.findByIdAndDelete(ObjectId(req.params.id));
       if (client) {
