@@ -94,7 +94,7 @@ const addProvider = async () => {
             <div class="mb-3 input-container">
               <label for="phoneNumber">Phone:</label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 id="phoneNumber"
                 v-model="properties.phone"
@@ -137,6 +137,7 @@ const addProvider = async () => {
             type="button"
             class="delete-btn"
             @click="$emit('delete-client')"
+            v-show="modal.title === 'Edit Client'"
           >
             Delete Client
           </button>
@@ -243,7 +244,7 @@ label {
 
 .modal-footer {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   border-top: solid;
 }
 

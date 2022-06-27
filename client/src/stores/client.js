@@ -8,14 +8,67 @@ export const useClientStore = defineStore({
   state: () => ({
     clients: [],
     clientError: '',
+    fieldSort: {
+      name: '',
+      email: '',
+      phone: '',
+      providers: '',
+    },
+    dateSort: '',
   }),
   actions: {
     setClientError(error) {
       this.clientError = error;
     },
+    sortByField(field, order) {
+      Object.keys(this.fieldSort).forEach((key) => {
+        if (key === field) {
+          this.fieldSort[field] = order;
+        } else {
+          this.fieldSort[key] = '';
+        }
+      });
+      switch (order) {
+        case 'Asc':
+          this.clients = this.clients.sort((a, b) => {
+            if (field === 'providers') {
+              return a[field].length > b[field].length ? 1 : -1;
+            }
+            return a[field] > b[field] ? 1 : -1;
+          });
+          break;
+        case 'Desc':
+          this.clients = this.clients.sort((a, b) => {
+            if (field === 'providers') {
+              return a[field].length < b[field].length ? 1 : -1;
+            }
+            return a[field] < b[field] ? 1 : -1;
+          });
+          break;
+        default:
+          this.clients = this.clients;
+      }
+    },
+    sortByDate(dateType, order) {
+      switch (order) {
+        case 'Asc':
+          this.clients = this.clients.sort((a, b) =>
+            a[dateType] > b[dateType] ? 1 : -1,
+          );
+          break;
+        case 'Desc':
+          this.clients = this.clients.sort((a, b) =>
+            a[dateType] < b[dateType] ? 1 : -1,
+          );
+          break;
+        default:
+          this.clients = this.clients;
+      }
+      this.dateSort = `${dateType}${order}`;
+    },
     async fetchClients() {
       try {
-        const { data } = await axios.get(`${baseUrl}/clients`);
+        const { data } = await axios.get(`${baseUrl}/clients/`);
         this.clients = data;
       } catch (error) {
         console.error(error.message);
