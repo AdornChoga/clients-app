@@ -5,7 +5,7 @@ import { useClientStore } from '../stores/client';
 
 const store = useClientStore();
 const { clients, fieldSort } = storeToRefs(store);
-const { fetchClients, sortByField } = useClientStore();
+const { fetchClients, sortByField, latestClientDate } = useClientStore();
 fetchClients();
 </script>
 
