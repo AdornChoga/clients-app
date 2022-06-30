@@ -2,8 +2,6 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import { useClientStore } from './client';
 
-const baseUrl = 'http://localhost:5000';
-
 export const useProviderStore = defineStore({
   id: 'provider',
   state: () => ({
@@ -16,7 +14,7 @@ export const useProviderStore = defineStore({
     },
     async fetchProviders() {
       try {
-        const { data } = await axios.get(`${baseUrl}/providers`);
+        const { data } = await axios.get(`api/providers`);
         this.providers = data.map((provider) => ({
           ...provider,
           editing: false,
@@ -27,7 +25,7 @@ export const useProviderStore = defineStore({
     },
     async createProvider(payload) {
       try {
-        const response = await axios.post(`${baseUrl}/providers`, payload);
+        const response = await axios.post(`api/providers`, payload);
         if (response.status === 200)
           this.providers.push({ ...response.data, editing: false });
       } catch (error) {
@@ -37,7 +35,7 @@ export const useProviderStore = defineStore({
     async updateProvider(payload) {
       try {
         const response = await axios.patch(
-          `${baseUrl}/providers/${payload._id}`,
+          `api/providers/${payload._id}`,
           payload,
         );
         if (response.status === 200) {
@@ -54,7 +52,7 @@ export const useProviderStore = defineStore({
     },
     async deleteProvider(id) {
       try {
-        const response = await axios.delete(`${baseUrl}/providers/${id}`);
+        const response = await axios.delete(`api/providers/${id}`);
         if (response.status === 200) {
           this.providers = this.providers.filter(
             (provider) => provider._id !== id,

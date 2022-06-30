@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:5000';
-
 const dateWithoutTime = (str) => {
   let date = new Date(str),
     month = ('0' + (date.getMonth() + 1)).slice(-2),
@@ -31,7 +29,7 @@ export const useClientStore = defineStore({
     },
     async fetchClients() {
       try {
-        const { data } = await axios.get(`${baseUrl}/clients/`);
+        const { data } = await axios.get(`api/clients/`);
         this.clients = data;
         await this.setOldestClientDate();
         await this.setNewestClientDate();
@@ -41,7 +39,7 @@ export const useClientStore = defineStore({
     },
     async createClient(payload) {
       try {
-        const response = await axios.post(`${baseUrl}/clients/`, payload);
+        const response = await axios.post(`api/clients/`, payload);
         if (response.status === 201) this.clients.push(response.data);
         await this.setOldestClientDate();
         await this.setNewestClientDate();
@@ -51,7 +49,7 @@ export const useClientStore = defineStore({
     },
     async updateClient(id, payload) {
       try {
-        const response = await axios.patch(`${baseUrl}/clients/${id}`, payload);
+        const response = await axios.patch(`api/clients/${id}`, payload);
         if (response.status === 200) {
           this.clients = this.clients.map((client) => {
             if (client._id === id)
@@ -65,7 +63,7 @@ export const useClientStore = defineStore({
     },
     async deleteClient(id) {
       try {
-        const res = await axios.delete(`${baseUrl}/clients/${id}`);
+        const res = await axios.delete(`api/clients/${id}`);
         if (res.status === 200)
           this.clients = this.clients.filter((client) => client._id !== id);
         await this.setOldestClientDate();
@@ -170,7 +168,7 @@ export const useClientStore = defineStore({
       }
     },
     async setOldestClientDate() {
-      const { data } = await axios.get(`${baseUrl}/clients/`);
+      const { data } = await axios.get(`api/clients/`);
       this.oldestClientDate = new Date(
         Math.min(
           ...data.map((client) => new Date(client['createdAt']).getTime()),
@@ -178,7 +176,7 @@ export const useClientStore = defineStore({
       );
     },
     async setNewestClientDate() {
-      const { data } = await axios.get(`${baseUrl}/clients/`);
+      const { data } = await axios.get(`api/clients/`);
       this.newestClientDate = new Date(
         Math.max(
           ...data.map((client) => new Date(client['createdAt']).getTime()),
