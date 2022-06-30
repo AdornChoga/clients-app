@@ -1,7 +1,6 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { ref, getCurrentInstance } from 'vue';
-import client from '../../../server/models/client';
 import { useClientStore } from '../stores/client';
 import { useProviderStore } from '../stores/provider';
 import Providers from './Providers.vue';

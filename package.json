@@ -5,8 +5,10 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "server": "nodemon server.js --ignore 'client/'",
-    "dev": "nodemon — exec babel-node server.js"
+    "start": "node server.js",
+    "client": "cd client && npm run dev",
+    "dev": "concurrently \"nodemon — exec babel-node server.js\" \"npm run client\"",
+    "build": "npm run build --prefix client"
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,7 @@
     "swagger-ui-express": "^4.4.0"
   },
   "devDependencies": {
+    "concurrently": "^7.2.2",
     "dotenv": "^16.0.1",
     "nodemon": "^2.0.16"
   }
