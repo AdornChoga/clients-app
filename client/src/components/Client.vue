@@ -1,5 +1,4 @@
 <script setup>
-import { storeToRefs } from 'pinia';
 import { useClientStore } from '../stores/client';
 import { useProviderStore } from '../stores/provider';
 import EditClient from './EditClient.vue';
@@ -11,14 +10,12 @@ const props = defineProps({
   },
 });
 
-const { providers } = storeToRefs(useProviderStore());
-const { fetchProviders } = useProviderStore();
+const providerStore = useProviderStore();
 const { deleteClient } = useClientStore();
-fetchProviders();
 
-const clientProviders = (providersArray) => {
+const clientProviders = () => {
   return props.client.providers.map((prov) =>
-    providersArray.find((provider) => provider._id === prov._id),
+    providerStore.providers.find((provider) => provider._id === prov._id),
   );
 };
 
@@ -34,7 +31,7 @@ const showComma = (index) => {
     <td>{{ client.email }}</td>
     <td>{{ client.phone }}</td>
     <td>
-      <span v-for="(provider, index) in clientProviders(providers)" :key="index"
+      <span v-for="(provider, index) in clientProviders()" :key="index"
         >{{ provider.name
         }}<span v-if="showComma(index)">,&nbsp;&nbsp;</span></span
       >

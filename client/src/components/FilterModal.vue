@@ -27,14 +27,6 @@ const range = reactive({
   end: '',
 });
 
-const dateWithoutTime = (str) => {
-  let date = new Date(str),
-    month = ('0' + (date.getMonth() + 1)).slice(-2),
-    day = ('0' + date.getDate()).slice(-2);
-  return [date.getFullYear(), month, day].join('-');
-};
-
-
 const selected = ref([]);
 
 const { providers } = storeToRefs(useProviderStore());
@@ -84,8 +76,8 @@ const filterClients = async (range) => {
         </div>
         <div class="modal-body">
           <div>
-            <h5 class="filter-title">Registration Date</h5>
             <form id="dates" @submit.prevent="filterClients(range)">
+              <h5 class="filter-title">Registration Date</h5>
               <div class="date-category">
                 <div>
                   <label for="specific-date">Specific Date</label>
@@ -173,6 +165,15 @@ const filterClients = async (range) => {
               </div>
               <div class="providers-section">
                 <h5 class="filter-title">Providers</h5>
+                <v-select
+                  multiple
+                  class="providers-dropdown"
+                  placeholder="Select some providers"
+                  v-model="selected"
+                  label="name"
+                  :options="providers"
+                  :reduce="(option) => option._id"
+                ></v-select>
                 <div class="providers-filtering-conditions">
                   <div>
                     <input
@@ -211,15 +212,6 @@ const filterClients = async (range) => {
                     >
                   </div>
                 </div>
-                <v-select
-                  multiple
-                  class="providers-dropdown"
-                  placeholder="Select some providers"
-                  v-model="selected"
-                  label="name"
-                  :options="providers"
-                  :reduce="(option) => option._id"
-                ></v-select>
               </div>
             </form>
           </div>
@@ -299,6 +291,7 @@ form span {
 
 .providers-dropdown {
   font-size: 1.4rem;
+  margin: 1.4rem;
 }
 
 .providers-filtering-conditions {
@@ -307,7 +300,7 @@ form span {
   gap: 5rem;
   font-size: 1.4rem;
   font-style: italic;
-  margin: 0.5rem 0;
+  margin: 1rem 0;
 }
 
 .providers-filtering-conditions > div {
