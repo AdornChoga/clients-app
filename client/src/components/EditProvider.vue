@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useProviderStore } from '../stores/provider';
 
-const { updateProvider } = useProviderStore();
+const { updateProvider, setProviderError } = useProviderStore();
 
 const props = defineProps({
   provider: {
@@ -14,8 +14,20 @@ const props = defineProps({
 const providerName = ref(props.provider.name);
 
 const editProvider = async () => {
-  await updateProvider({ ...props.provider, name: providerName.value });
-  props.provider.editing = false;
+  try {
+    await updateProvider({ ...props.provider, name: providerName.value });
+    props.provider.editing = false;
+    setProviderError('');
+  } catch ({ response }) {
+    const { error } = response.data;
+    if (error.match('name_1 dup key')) {
+      setProviderError(
+        `Provider with the name ${providerName.value} already exists!`,
+      );
+    } else {
+      console.error(error);
+    }
+  }
 };
 </script>
 

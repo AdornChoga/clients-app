@@ -26,6 +26,9 @@ export const useClientStore = defineStore({
     dateSort: '',
   }),
   actions: {
+    setClientError(error) {
+      this.clientError = error;
+    },
     async fetchClients() {
       try {
         const { data } = await axios.get(`${baseUrl}/clients/`);
@@ -81,9 +84,6 @@ export const useClientStore = defineStore({
         console.error(error.message);
       }
     },
-    setClientError(error) {
-      this.clientError = error;
-    },
     sortByField(field, order) {
       Object.keys(this.fieldSort).forEach((key) => {
         if (key === field) {
@@ -117,12 +117,16 @@ export const useClientStore = defineStore({
       switch (order) {
         case 'Asc':
           this.clients = this.clients.sort((a, b) =>
-            a[dateType] > b[dateType] ? 1 : -1,
+            new Date(a[dateType]).getTime() > new Date(b[dateType]).getTime()
+              ? 1
+              : -1,
           );
           break;
         case 'Desc':
           this.clients = this.clients.sort((a, b) =>
-            a[dateType] < b[dateType] ? 1 : -1,
+            new Date(a[dateType]).getTime() < new Date(b[dateType]).getTime()
+              ? 1
+              : -1,
           );
           break;
         default:

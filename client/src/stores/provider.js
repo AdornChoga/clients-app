@@ -49,7 +49,7 @@ export const useProviderStore = defineStore({
           });
         }
       } catch (error) {
-        console.error(error.message);
+        throw error;
       }
     },
     async deleteProvider(id) {
