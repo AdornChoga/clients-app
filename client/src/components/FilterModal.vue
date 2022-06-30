@@ -2,10 +2,12 @@
 import { ref, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
 import 'v-calendar/dist/style.css';
+import 'vue-select/dist/vue-select.css';
 import { useClientStore } from '../stores/client';
+import { useProviderStore } from '../stores/provider';
 
 function onlyOneCheckbox(checkbox) {
-  var checkboxes = document.getElementsByName('date-category');
+  var checkboxes = document.getElementsByName(checkbox.name);
   checkboxes.forEach((item) => {
     if (item !== checkbox) item.checked = false;
   });
@@ -16,25 +18,44 @@ const specificDate = ref(false);
 
 const dateRange = ref(false);
 
+const strictProvidersSelection = ref(true);
+
+const oneOfProvidersSelection = ref(false);
+
 const range = reactive({
   start: '',
   end: '',
 });
 
+const dateWithoutTime = (str) => {
+  let date = new Date(str),
+    month = ('0' + (date.getMonth() + 1)).slice(-2),
+    day = ('0' + date.getDate()).slice(-2);
+  return [date.getFullYear(), month, day].join('-');
+};
+
+
+const selected = ref([]);
+
+const { providers } = storeToRefs(useProviderStore());
+
 const clientStore = useClientStore();
 
 const { oldestClientDate, newestClientDate } = storeToRefs(clientStore);
 
-const { filterByDate, fetchClients } = clientStore;
+const { filterByDate, filterByProviders, fetchClients } = clientStore;
 
-const filterClientsByDate = async (range) => {
+const filterClients = async (range) => {
   await fetchClients();
   if (specificDate.value) {
     await filterByDate(dateValue.value, 'specificDate');
   } else if (dateRange.value) {
     await filterByDate(range, 'dateRange');
-  } else {
-    await fetchClients();
+  }
+  if (selected.value.length) {
+    strictProvidersSelection.value
+      ? await filterByProviders(selected.value, 'strictProvidersSelection')
+      : await filterByProviders(selected.value, 'oneOfProvidersSelection');
   }
   $('#filterModal').modal('toggle');
 };
@@ -64,7 +85,7 @@ const filterClientsByDate = async (range) => {
         <div class="modal-body">
           <div>
             <h5 class="filter-title">Registration Date</h5>
-            <form id="dates" @submit.prevent="filterClientsByDate(range)">
+            <form id="dates" @submit.prevent="filterClients(range)">
               <div class="date-category">
                 <div>
                   <label for="specific-date">Specific Date</label>
@@ -150,6 +171,56 @@ const filterClientsByDate = async (range) => {
                   </template>
                 </v-date-picker>
               </div>
+              <div class="providers-section">
+                <h5 class="filter-title">Providers</h5>
+                <div class="providers-filtering-conditions">
+                  <div>
+                    <input
+                      type="checkbox"
+                      id="strictly-all-selected"
+                      name="provider-selection"
+                      @click="onlyOneCheckbox($event.target)"
+                      :checked="strictProvidersSelection"
+                      @change="
+                        (e) => {
+                          strictProvidersSelection = e.target.checked;
+                          oneOfProvidersSelection = false;
+                        }
+                      "
+                    />
+                    <label for="strictly-all-selected"
+                      >Strictly All Selected</label
+                    >
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      id="either-of-selected"
+                      name="provider-selection"
+                      @click="onlyOneCheckbox($event.target)"
+                      :checked="oneOfProvidersSelection"
+                      @change="
+                        (e) => {
+                          oneOfProvidersSelection = e.target.checked;
+                          strictProvidersSelection = false;
+                        }
+                      "
+                    />
+                    <label for="either-of-selected"
+                      >At least One Of Selected</label
+                    >
+                  </div>
+                </div>
+                <v-select
+                  multiple
+                  class="providers-dropdown"
+                  placeholder="Select some providers"
+                  v-model="selected"
+                  label="name"
+                  :options="providers"
+                  :reduce="(option) => option._id"
+                ></v-select>
+              </div>
             </form>
           </div>
         </div>
@@ -183,6 +254,7 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 2rem;
 }
 
 select {
@@ -219,5 +291,28 @@ form span {
 
 .fa-arrow-right-long {
   font-size: 1.7rem;
+}
+
+.providers-section {
+  width: 100%;
+}
+
+.providers-dropdown {
+  font-size: 1.4rem;
+}
+
+.providers-filtering-conditions {
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+  font-size: 1.4rem;
+  font-style: italic;
+  margin: 0.5rem 0;
+}
+
+.providers-filtering-conditions > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 </style>

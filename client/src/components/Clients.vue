@@ -3,6 +3,14 @@ import ClientsTable from './ClientsTable.vue';
 import NewClient from './NewClient.vue';
 import FilterModal from './FilterModal.vue';
 import SortDropdown from './SortDropdown.vue';
+import { useClientStore } from '../stores/client';
+import { useProviderStore } from '../stores/provider';
+
+const { fetchProviders } = useProviderStore();
+const { fetchClients } = useClientStore();
+
+fetchProviders();
+fetchClients();
 </script>
 
 <template>

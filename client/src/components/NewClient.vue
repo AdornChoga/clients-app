@@ -68,5 +68,6 @@ const submitClient = async () => {
     :properties="properties"
     @toggle-provider="toggleProvider"
     @submit-client="submitClient"
+    @cancel-operation="resetInputData"
   />
 </template>

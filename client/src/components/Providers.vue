@@ -10,8 +10,7 @@ const props = defineProps({
 });
 
 const { providers } = storeToRefs(useProviderStore());
-const { fetchProviders, deleteProvider } = useProviderStore();
-fetchProviders();
+const { deleteProvider } = useProviderStore();
 
 const checkedBox = (provider) => {
   if (props.clientProviders) {
@@ -25,16 +24,16 @@ const checkedBox = (provider) => {
   <form class="providers">
     <div v-for="provider in providers" :key="provider._id">
       <EditProvider :provider="provider" v-if="provider.editing" />
-      <div v-else class="form-check">
+      <div v-else class="provider">
         <div>
           <input
             class="form-check-input"
             type="checkbox"
-            :checked="checkedBox(provider)"
+            :checked="false"
             :id="provider._id"
             @click="$emit('toggle-provider', $event.target)"
           />
-          <label class="form-check-label" :for="provider._id">{{
+          <label class="form-check-label px-3" :for="provider._id">{{
             provider.name
           }}</label>
         </div>
@@ -61,12 +60,12 @@ const checkedBox = (provider) => {
   font-size: 2rem;
 }
 
-.providers .form-check {
+.providers .provider {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  padding: 2rem 5rem;
+  padding: 2rem 2rem;
 }
 
 .edit-delete-provider {

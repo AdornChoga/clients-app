@@ -131,19 +131,38 @@ export const useClientStore = defineStore({
       this.dateSort = `${dateType}${order}`;
     },
     async filterByDate(date, category) {
-      const { data } = await axios.get(`${baseUrl}/clients/`);
       if (category === 'specificDate') {
-        this.clients = data.filter(
+        this.clients = this.clients.filter(
           (client) =>
             dateWithoutTime(client['createdAt']) === dateWithoutTime(date),
         );
       } else if (category === 'dateRange') {
-        this.clients = data.filter((client) => {
+        this.clients = this.clients.filter((client) => {
           let clientDate = new Date(client['createdAt']).getTime();
           let startDate = new Date(date.start.setHours(0, 0, 0, 0)).getTime();
-          let endDate = date.end.getTime();
+          let endDate =
+            dateWithoutTime(new Date()) === dateWithoutTime(date)
+              ? date.end.getTime()
+              : date.end.setHours(23, 59, 59, 59);
           return startDate <= clientDate && clientDate <= endDate;
         });
+      }
+    },
+    async filterByProviders(selectedProviders, selectionType) {
+      if (selectionType === 'strictProvidersSelection') {
+        this.clients = this.clients.filter(
+          (client) =>
+            client.providers.length === selectedProviders.length &&
+            client.providers.every(
+              (provider, index) => provider._id === selectedProviders[index],
+            ),
+        );
+      } else if (selectionType === 'oneOfProvidersSelection') {
+        this.clients = this.clients.filter((client) =>
+          client.providers.some((provider) =>
+            selectedProviders.includes(provider._id),
+          ),
+        );
       }
     },
     async setOldestClientDate() {

@@ -3,10 +3,9 @@ import Client from './Client.vue';
 import { storeToRefs } from 'pinia';
 import { useClientStore } from '../stores/client';
 
-const store = useClientStore();
-const { clients, fieldSort } = storeToRefs(store);
-const { fetchClients, sortByField, latestClientDate } = useClientStore();
-fetchClients();
+const clientStore = useClientStore();
+const { clients, fieldSort } = storeToRefs(clientStore);
+const { sortByField } = clientStore;
 </script>
 
 <template>

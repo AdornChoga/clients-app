@@ -1,6 +1,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { ref, getCurrentInstance } from 'vue';
+import client from '../../../server/models/client';
 import { useClientStore } from '../stores/client';
 import { useProviderStore } from '../stores/provider';
 import Providers from './Providers.vue';
@@ -16,8 +17,9 @@ defineProps({
   },
 });
 
-const { clientError } = storeToRefs(useClientStore());
-const { setClientError } = useClientStore();
+const clientStore = useClientStore();
+
+const { clientError } = storeToRefs(clientStore);
 
 const { emit } = getCurrentInstance();
 
@@ -27,9 +29,11 @@ const checkboxEmitter = (checkbox) => {
 
 const providerName = ref('');
 
-const { providerError } = storeToRefs(useProviderStore());
+const providerStore = useProviderStore();
 
-const { createProvider, setProviderError } = useProviderStore();
+const { providerError } = storeToRefs(providerStore);
+
+const { createProvider, setProviderError } = providerStore;
 
 const addProvider = async () => {
   try {
@@ -54,10 +58,11 @@ const addProvider = async () => {
   <div
     class="modal fade"
     :id="modal.id"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
     tabindex="-1"
     :aria-labelledby="`${modal.id}Label`"
     aria-hidden="true"
-    backdrop="false"
   >
     <div class="modal-dialog">
       <div class="modal-content">
@@ -141,7 +146,13 @@ const addProvider = async () => {
           >
             Delete Client
           </button>
-          <button type="button" data-bs-dismiss="modal">Cancel</button>
+          <button
+            type="button"
+            data-bs-dismiss="modal"
+            @click="$emit('cancel-operation')"
+          >
+            Cancel
+          </button>
           <button type="submit" :form="modal.formId">
             {{ modal.type }}
           </button>
@@ -163,7 +174,6 @@ const addProvider = async () => {
 .error-message {
   width: 75%;
   background-color: #da7c7e;
-  /* padding: 2rem; */
   margin-inline: auto;
   color: white;
   font-size: 1.8rem;
