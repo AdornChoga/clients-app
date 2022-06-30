@@ -6,7 +6,7 @@ const clientSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true, index: true },
     phone: { type: String, required: true },
     providers: [
-      { _id: { type: mongoose.SchemaTypes.ObjectId, ref: 'Provider' } },
+      { _id: { type: mongoose.Schema.Types.ObjectId, ref: 'Provider' } },
     ],
   },
   { timestamps: true },

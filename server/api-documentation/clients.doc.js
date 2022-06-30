@@ -29,11 +29,10 @@
  *             type: object
  *           description: The providers of the client
  *       example:
- *         _id: '62b0c0dafnc22a39d5b85c9c'
- *         name: 'Client 1'
- *         email: 'client1@email.com'
+ *         name: 'Example Client'
+ *         email: 'exampleclient@email.com'
  *         phone: '2483569028'
- *         providers: [{_id: '22a39d5b85c9c62b0c0dafnc'}]
+ *         providers: [{_id: 'Id of provider'}]
  *     Client404:
  *       type: object
  *       required:
@@ -48,7 +47,9 @@
 
 /**
  * @swagger
- * tags: [Clients]
+ * tags:
+ *   name: Clients
+ *   description: Endpoint to manage clients
  */
 
 /**

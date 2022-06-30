@@ -12,8 +12,7 @@
  *           type: string
  *           description: The name of the provider
  *       example:
- *         _id: '8b0c1dafnc22a39d5b85c4c'
- *         name: 'Provider 1'
+ *         name: 'Example Provider'
  *     Provider404:
  *       type: object
  *       required:
@@ -28,7 +27,9 @@
 
 /**
  * @swagger
- * tags: [Providers]
+ * tags:
+ *   name: Providers
+ *   description: Endpoint to manage providers
  */
 
 /**
@@ -104,15 +105,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               required:
- *                 - message:
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Confirmation of a successfull provider update
- *               example:
- *                 message: 'The provider was updated successfully'
+ *               $ref: '#components/schemas/Provider'
  *       400:
  *         description: The server returned an error
  *       404:

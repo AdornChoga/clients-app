@@ -13,7 +13,6 @@ export default class ClientsApi {
   static async fetchClient(req, res) {
     try {
       const client = await Client.findById(ObjectId(req.params.id));
-      console.log(client.providers);
       if (client) return res.status(200).send(client);
       res
         .status(404)
@@ -32,8 +31,6 @@ export default class ClientsApi {
   }
   static async updateClient(req, res) {
     try {
-      if (Object.keys(req.body).length === 0)
-        return res.status(400).send({ error: 'Missing body in request' });
       await Client.updateOne({ _id: ObjectId(req.params.id) }, req.body);
       const updatedClient = await Client.findById(ObjectId(req.params.id));
       if (updatedClient) {

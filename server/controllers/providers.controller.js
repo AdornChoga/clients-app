@@ -21,14 +21,10 @@ export default class ProvidersApi {
   }
   static async updateProvider(req, res) {
     try {
-      const updatedProvider = await Provider.findByIdAndUpdate(
-        ObjectId(req.params.id),
-        req.body,
-      );
+      await Provider.updateOne({ _id: ObjectId(req.params.id) }, req.body);
+      const updatedProvider = await Provider.findById(ObjectId(req.params.id));
       if (updatedProvider) {
-        return res
-          .status(200)
-          .send({ message: 'The provider was updated successfully' });
+        return res.status(200).send(updatedProvider);
       }
       res
         .status(404)
