@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -21,7 +22,7 @@ const options = {
       },
     ],
   },
-  apis: ['./api-documentation/*.js'],
+  apis: ['./api-docs/*.js'],
 };
 
 const specs = swaggerJSDoc(options);
@@ -51,6 +52,13 @@ mongoose.connect(
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
+
+if (process.env.APP_ENV === 'simulated_production') {
+  app.use(express.static('client/dist'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+  });
+}
 
 const PORT = process.env.PORT;
 

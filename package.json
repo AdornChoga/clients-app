@@ -2,10 +2,11 @@
   "name": "clients-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon — exec babel-node index.js"
+    "server": "nodemon server.js --ignore 'client/'",
+    "dev": "nodemon — exec babel-node server.js"
   },
   "repository": {
     "type": "git",
