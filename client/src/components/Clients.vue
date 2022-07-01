@@ -28,6 +28,7 @@ const refresh = async () => {
         <h2>Clients</h2>
         <button
           type="button"
+          class="new-client-btn"
           data-bs-toggle="modal"
           data-bs-target="#newClientModal"
         >
@@ -69,7 +70,7 @@ const refresh = async () => {
   </div>
 </template>
 
-<style scoped>
+<style>
 .table-header {
   padding: 2.5rem 2.5rem;
   background-color: #f0f5f9;
@@ -84,14 +85,18 @@ const refresh = async () => {
 }
 .title-section > h2 {
   color: #35748a;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
 }
 
-.title-section > button {
+.btn {
+  font-size: 1.3rem;
+}
+
+.new-client-btn {
   border: solid rgb(192, 191, 191);
   outline: none;
-  padding: 0.5rem 1rem;
-  font-size: 1.9rem;
+  padding: 0.3rem 1rem;
+  font-size: 1.7rem;
   background-color: #f3f3f3;
   border-radius: 0.7rem;
 }
@@ -110,5 +115,11 @@ const refresh = async () => {
   width: 4rem;
   height: 4rem;
   font-size: 1.8rem;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: solid rgb(240, 237, 237);
 }
 </style>

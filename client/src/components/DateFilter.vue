@@ -119,13 +119,6 @@ const { oldestClientDate, newestClientDate } = storeToRefs(clientStore);
 </template>
 
 <style scoped>
-.filter-title {
-  font-size: 1.8rem;
-  background-color: #d0dbe5;
-  text-align: center;
-  width: 100%;
-}
-
 .date-range {
   display: flex;
   justify-content: space-between;

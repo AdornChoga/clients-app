@@ -62,6 +62,9 @@ const { sortByDate } = useClientStore();
 </template>
 
 <style scoped>
+li > button {
+  font-size: 1.4rem;
+}
 .date-sort-active {
   border-left: 0.5rem solid #35748a;
   border-right: 0.5rem solid #35748a;

@@ -84,7 +84,11 @@ const clearFilters = async () => {
         </div>
         <div class="modal-body">
           <div>
-            <form id="dates" @submit.prevent="filterClients">
+            <form
+              id="dates"
+              class="filters-form"
+              @submit.prevent="filterClients"
+            >
               <DateFilter
                 :dateProperties="dateProperties"
                 @toggle-checkbox="onlyOneCheckbox"
@@ -99,7 +103,7 @@ const clearFilters = async () => {
         <div class="modal-footer">
           <button
             type="button"
-            class="btn clear-filters-btn"
+            class="clear-filters-btn"
             @click="clearFilters"
           >
             Clear Filters
@@ -120,8 +124,14 @@ const clearFilters = async () => {
   </div>
 </template>
 
-<style scoped>
-form {
+<style>
+.filter-title {
+  font-size: 1.8rem;
+  background-color: #d0dbe5;
+  text-align: center;
+  width: 100%;
+}
+.filters-form {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -129,16 +139,13 @@ form {
   gap: 2rem;
 }
 
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  border-top: solid rgb(240, 237, 237);
-}
-
 .clear-filters-btn {
   margin-right: auto;
   border: none;
   background-color: #35748a;
   color: white;
+  border-radius: .5rem;
+  padding: .6rem .8rem;
+  font-size: 1.3rem;
 }
 </style>

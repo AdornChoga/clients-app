@@ -251,12 +251,6 @@ label {
   margin-top: 0.2rem;
 }
 
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  border-top: solid rgb(240, 237, 237);
-}
-
 .delete-btn {
   align-self: flex-start;
   border: none;
