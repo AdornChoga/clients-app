@@ -254,7 +254,7 @@ label {
 .modal-footer {
   display: flex;
   justify-content: flex-end;
-  border-top: solid;
+  border-top: solid rgb(240, 237, 237);
 }
 
 .delete-btn {

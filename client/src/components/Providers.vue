@@ -29,7 +29,7 @@ const checkedBox = (provider) => {
           <input
             class="form-check-input"
             type="checkbox"
-            :checked="false"
+            :checked="checkedBox(provider)"
             :id="provider._id"
             @click="$emit('toggle-provider', $event.target)"
           />
