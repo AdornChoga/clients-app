@@ -51,6 +51,16 @@ const filterClients = async (range) => {
   }
   $('#filterModal').modal('toggle');
 };
+
+const clearFilters = async () => {
+  specificDate.value = false;
+  dateRange.value = false;
+  strictProvidersSelection.value = true;
+  oneOfProvidersSelection.value = false;
+  selected.value = [];
+  await fetchClients();
+  $('#filterModal').modal('toggle');
+};
 </script>
 
 <template>
@@ -145,7 +155,7 @@ const filterClients = async (range) => {
                       <input
                         class="date-input"
                         placeholder="MM/DD/YYYY"
-                        v-model="inputValue.start"
+                        :value="inputValue.start"
                         v-on="inputEvents.start"
                         :disabled="!dateRange"
                         required
@@ -154,7 +164,7 @@ const filterClients = async (range) => {
                       <input
                         class="date-input"
                         placeholder="MM/DD/YYYY"
-                        v-model="inputValue.end"
+                        :value="inputValue.end"
                         v-on="inputEvents.end"
                         :disabled="!dateRange"
                         required
@@ -217,6 +227,13 @@ const filterClients = async (range) => {
           </div>
         </div>
         <div class="modal-footer">
+          <button
+            type="button"
+            class="btn clear-filters-btn"
+            @click="clearFilters"
+          >
+            Clear Filters
+          </button>
           <button
             type="button"
             class="btn btn-secondary"
@@ -307,5 +324,18 @@ form span {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: solid rgb(240, 237, 237);
+}
+
+.clear-filters-btn {
+  margin-right: auto;
+  border: none;
+  background-color: #35748a;
+  color: white;
 }
 </style>

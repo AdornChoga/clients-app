@@ -16,4 +16,8 @@ body {
   margin: 0;
   padding: 0;
 }
+
+button:active {
+  transform: scale(0.9);
+}
 </style>
