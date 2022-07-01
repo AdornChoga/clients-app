@@ -14,6 +14,7 @@ export const useClientStore = defineStore({
   id: 'client',
   state: () => ({
     clients: [],
+    loading: false,
     oldestClientDate: null,
     newestClientDate: null,
     clientError: '',
@@ -31,12 +32,15 @@ export const useClientStore = defineStore({
     },
     async fetchClients() {
       try {
+        this.loading = true;
         const { data } = await axios.get(`${baseUrl}/clients/`);
         this.clients = data;
+        this.loading = false;
         await this.setOldestClientDate();
         await this.setNewestClientDate();
       } catch (error) {
         console.error(error.message);
+        this.loading = false;
       }
     },
     async createClient(payload) {

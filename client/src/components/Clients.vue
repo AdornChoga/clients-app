@@ -1,4 +1,5 @@
 <script setup>
+import { storeToRefs } from 'pinia';
 import ClientsTable from './ClientsTable.vue';
 import NewClient from './NewClient.vue';
 import FilterModal from './FilterModal.vue';
@@ -6,8 +7,10 @@ import SortDropdown from './SortDropdown.vue';
 import { useClientStore } from '../stores/client';
 import { useProviderStore } from '../stores/provider';
 
+const clientStore = useClientStore();
+const { loading } = storeToRefs(clientStore);
 const { fetchProviders } = useProviderStore();
-const { fetchClients } = useClientStore();
+const { fetchClients } = clientStore;
 
 fetchProviders();
 fetchClients();
@@ -43,6 +46,9 @@ fetchClients();
         </div>
       </div>
     </div>
+    <div v-if="loading" class="spinner-border loading-spinner" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
     <NewClient />
     <ClientsTable />
   </div>
@@ -73,5 +79,14 @@ fetchClients();
   font-size: 1.9rem;
   background-color: #f3f3f3;
   border-radius: 0.7rem;
+}
+
+.loading-spinner {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  width: 4rem;
+  height: 4rem;
+  font-size: 1.8rem;
 }
 </style>
