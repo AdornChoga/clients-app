@@ -147,9 +147,9 @@ export const useClientStore = defineStore({
       } else if (category === 'dateRange') {
         this.clients = this.clients.filter((client) => {
           let clientDate = new Date(client['createdAt']).getTime();
-          let startDate = new Date(date.start.setHours(0, 0, 0, 0)).getTime();
+          let startDate = date.start.setHours(0, 0, 0, 0);
           let endDate =
-            dateWithoutTime(new Date()) === dateWithoutTime(date)
+            dateWithoutTime(new Date()) === dateWithoutTime(date.end)
               ? date.end.getTime()
               : date.end.setHours(23, 59, 59, 59);
           return startDate <= clientDate && clientDate <= endDate;

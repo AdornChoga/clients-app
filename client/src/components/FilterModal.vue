@@ -5,6 +5,7 @@ import 'v-calendar/dist/style.css';
 import 'vue-select/dist/vue-select.css';
 import { useClientStore } from '../stores/client';
 import { useProviderStore } from '../stores/provider';
+import DateFilter from './DateFilter.vue';
 
 function onlyOneCheckbox(checkbox) {
   var checkboxes = document.getElementsByName(checkbox.name);
@@ -12,20 +13,18 @@ function onlyOneCheckbox(checkbox) {
     if (item !== checkbox) item.checked = false;
   });
 }
-const dateValue = ref('');
 
-const specificDate = ref(false);
-
-const dateRange = ref(false);
+const dateProperties = reactive({
+  dateValue: '',
+  specificDate: false,
+  dateRange: false,
+  startDate: '',
+  endDate: '',
+});
 
 const strictProvidersSelection = ref(true);
 
 const oneOfProvidersSelection = ref(false);
-
-const range = reactive({
-  start: '',
-  end: '',
-});
 
 const selected = ref([]);
 
@@ -33,15 +32,16 @@ const { providers } = storeToRefs(useProviderStore());
 
 const clientStore = useClientStore();
 
-const { oldestClientDate, newestClientDate } = storeToRefs(clientStore);
-
 const { filterByDate, filterByProviders, fetchClients } = clientStore;
 
-const filterClients = async (range) => {
+const filterClients = async () => {
   await fetchClients();
-  if (specificDate.value) {
-    await filterByDate(dateValue.value, 'specificDate');
-  } else if (dateRange.value) {
+  const { dateValue, specificDate, dateRange, startDate, endDate } =
+    dateProperties;
+  if (specificDate) {
+    await filterByDate(dateValue, 'specificDate');
+  } else if (dateRange) {
+    const range = { start: startDate, end: endDate };
     await filterByDate(range, 'dateRange');
   }
   if (selected.value.length) {
@@ -86,93 +86,8 @@ const clearFilters = async () => {
         </div>
         <div class="modal-body">
           <div>
-            <form id="dates" @submit.prevent="filterClients(range)">
-              <h5 class="filter-title">Registration Date</h5>
-              <div class="date-category">
-                <div>
-                  <label for="specific-date">Specific Date</label>
-                  <input
-                    type="checkbox"
-                    name="date-category"
-                    id="specific-date"
-                    @click="onlyOneCheckbox($event.target)"
-                    :checked="specificDate"
-                    @change="
-                      (e) => {
-                        specificDate = e.target.checked;
-                        dateRange = false;
-                      }
-                    "
-                  />
-                </div>
-                <v-date-picker
-                  v-model="dateValue"
-                  mode="date"
-                  :available-dates="{
-                    start: oldestClientDate,
-                    end: newestClientDate,
-                  }"
-                >
-                  <template v-slot="{ inputValue, inputEvents }">
-                    <input
-                      class="date-input specific"
-                      placeholder="MM/DD/YYYY"
-                      :value="inputValue"
-                      v-on="inputEvents"
-                      :disabled="!specificDate"
-                      required
-                    />
-                  </template>
-                </v-date-picker>
-              </div>
-              <div class="date-category">
-                <div>
-                  <label for="date-range">Select Range</label>
-                  <input
-                    type="checkbox"
-                    name="date-category"
-                    id="date-range"
-                    @click="onlyOneCheckbox($event.target)"
-                    :checked="dateRange"
-                    @change="
-                      (e) => {
-                        dateRange = e.target.checked;
-                        specificDate = false;
-                      }
-                    "
-                  />
-                </div>
-                <v-date-picker
-                  v-model="range"
-                  is-range
-                  :available-dates="{
-                    start: oldestClientDate,
-                    end: newestClientDate,
-                  }"
-                >
-                  <template v-slot="{ inputValue, inputEvents }">
-                    <div class="flex justify-center items-center">
-                      <input
-                        class="date-input"
-                        placeholder="MM/DD/YYYY"
-                        :value="inputValue.start"
-                        v-on="inputEvents.start"
-                        :disabled="!dateRange"
-                        required
-                      />
-                      <i class="fa-solid fa-arrow-right-long"></i>
-                      <input
-                        class="date-input"
-                        placeholder="MM/DD/YYYY"
-                        :value="inputValue.end"
-                        v-on="inputEvents.end"
-                        :disabled="!dateRange"
-                        required
-                      />
-                    </div>
-                  </template>
-                </v-date-picker>
-              </div>
+            <form id="dates" @submit.prevent="filterClients">
+              <DateFilter :dateProperties="dateProperties" />
               <div class="providers-section">
                 <h5 class="filter-title">Providers</h5>
                 <v-select
@@ -251,13 +166,6 @@ const clearFilters = async () => {
 </template>
 
 <style scoped>
-.filter-title {
-  font-size: 1.8rem;
-  background-color: #d0dbe5;
-  text-align: center;
-  width: 100%;
-}
-
 form {
   width: 100%;
   display: flex;
@@ -271,34 +179,6 @@ select {
 }
 
 form span {
-  font-size: 1.7rem;
-}
-
-.date-input {
-  display: inline-block;
-  font-size: 1.3rem;
-  font-weight: 500;
-  width: 40%;
-  text-align: center;
-}
-
-.date-input.specific {
-  width: 100%;
-}
-
-.date-category div:first-child {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-}
-
-.date-category label {
-  font-size: 1.7rem;
-  font-style: italic;
-}
-
-.fa-arrow-right-long {
   font-size: 1.7rem;
 }
 
