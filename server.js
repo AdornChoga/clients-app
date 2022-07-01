@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -18,7 +19,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
+        url: 'http://localhost:5000/api',
       },
     ],
   },
@@ -35,8 +36,8 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use('/clients', clients);
-app.use('/providers', providers);
+app.use('/api/clients', clients);
+app.use('/api/providers', providers);
 
 const mongoDB = process.env.DB_URI;
 
@@ -53,12 +54,13 @@ const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
 
-if (process.env.APP_ENV === 'simulated_production') {
-  app.use(express.static('client/dist'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
-  });
-}
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static('client/dist'));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+});
 
 const PORT = process.env.PORT;
 

@@ -74,8 +74,8 @@ td {
 }
 
 .edit-btn {
-  color: rgb(61, 61, 230);
-  text-decoration: solid underline rgb(61, 61, 230);
+  color: #35748a;
+  text-decoration: solid underline #35748a;
 }
 
 .delete-btn {

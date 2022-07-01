@@ -69,7 +69,7 @@ fetchClients();
 .title-section > button {
   border: solid rgb(192, 191, 191);
   outline: none;
-  padding: 0.6rem 2.3rem;
+  padding: 0.5rem 1rem;
   font-size: 1.9rem;
   background-color: #f3f3f3;
   border-radius: 0.7rem;

@@ -5,9 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
     "client": "cd client && npm run dev",
-    "dev": "concurrently \"nodemon — exec babel-node server.js\" \"npm run client\"",
+    "server": "nodemon — exec babel-node server.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm run build --prefix client"
   },
   "repository": {
