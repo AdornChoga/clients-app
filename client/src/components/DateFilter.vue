@@ -1,6 +1,8 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useClientStore } from '../stores/client';
+import 'v-calendar/dist/style.css';
+import 'vue-select/dist/vue-select.css';
 
 defineProps({
   dateProperties: {
@@ -8,6 +10,8 @@ defineProps({
     required: true,
   },
 });
+
+defineEmits(['toggle-checkbox']);
 
 const clientStore = useClientStore();
 

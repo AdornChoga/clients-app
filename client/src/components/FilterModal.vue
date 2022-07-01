@@ -1,11 +1,8 @@
 <script setup>
 import { ref, reactive } from 'vue';
-import { storeToRefs } from 'pinia';
-import 'v-calendar/dist/style.css';
-import 'vue-select/dist/vue-select.css';
 import { useClientStore } from '../stores/client';
-import { useProviderStore } from '../stores/provider';
 import DateFilter from './DateFilter.vue';
+import ProvidersFilter from './ProvidersFilter.vue';
 
 function onlyOneCheckbox(checkbox) {
   var checkboxes = document.getElementsByName(checkbox.name);
@@ -22,13 +19,10 @@ const dateProperties = reactive({
   endDate: '',
 });
 
-const strictProvidersSelection = ref(true);
-
-const oneOfProvidersSelection = ref(false);
-
-const selected = ref([]);
-
-const { providers } = storeToRefs(useProviderStore());
+const providersFilterProps = reactive({
+  exactMatching: true,
+  selected: [],
+});
 
 const clientStore = useClientStore();
 
@@ -38,26 +32,30 @@ const filterClients = async () => {
   await fetchClients();
   const { dateValue, specificDate, dateRange, startDate, endDate } =
     dateProperties;
+
+  const { exactMatching, selected } = providersFilterProps;
   if (specificDate) {
     await filterByDate(dateValue, 'specificDate');
   } else if (dateRange) {
     const range = { start: startDate, end: endDate };
     await filterByDate(range, 'dateRange');
   }
-  if (selected.value.length) {
-    strictProvidersSelection.value
-      ? await filterByProviders(selected.value, 'strictProvidersSelection')
-      : await filterByProviders(selected.value, 'oneOfProvidersSelection');
+  if (selected.length) {
+    exactMatching
+      ? await filterByProviders(selected, 'strictProvidersSelection')
+      : await filterByProviders(selected, 'oneOfProvidersSelection');
   }
   $('#filterModal').modal('toggle');
 };
 
 const clearFilters = async () => {
-  specificDate.value = false;
-  dateRange.value = false;
-  strictProvidersSelection.value = true;
-  oneOfProvidersSelection.value = false;
-  selected.value = [];
+  dateProperties.dateValue = '';
+  dateProperties.specificDate = false;
+  dateProperties.dateRange = false;
+  dateProperties.startDate = '';
+  dateProperties.endDate = '';
+  providersFilterProps.exactMatching = true;
+  providersFilterProps.selected = [];
   await fetchClients();
   $('#filterModal').modal('toggle');
 };
@@ -87,57 +85,14 @@ const clearFilters = async () => {
         <div class="modal-body">
           <div>
             <form id="dates" @submit.prevent="filterClients">
-              <DateFilter :dateProperties="dateProperties" />
-              <div class="providers-section">
-                <h5 class="filter-title">Providers</h5>
-                <v-select
-                  multiple
-                  class="providers-dropdown"
-                  placeholder="Select some providers"
-                  v-model="selected"
-                  label="name"
-                  :options="providers"
-                  :reduce="(option) => option._id"
-                ></v-select>
-                <div class="providers-filtering-conditions">
-                  <div>
-                    <input
-                      type="checkbox"
-                      id="strictly-all-selected"
-                      name="provider-selection"
-                      @click="onlyOneCheckbox($event.target)"
-                      :checked="strictProvidersSelection"
-                      @change="
-                        (e) => {
-                          strictProvidersSelection = e.target.checked;
-                          oneOfProvidersSelection = false;
-                        }
-                      "
-                    />
-                    <label for="strictly-all-selected"
-                      >Strictly All Selected</label
-                    >
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      id="either-of-selected"
-                      name="provider-selection"
-                      @click="onlyOneCheckbox($event.target)"
-                      :checked="oneOfProvidersSelection"
-                      @change="
-                        (e) => {
-                          oneOfProvidersSelection = e.target.checked;
-                          strictProvidersSelection = false;
-                        }
-                      "
-                    />
-                    <label for="either-of-selected"
-                      >At least One Of Selected</label
-                    >
-                  </div>
-                </div>
-              </div>
+              <DateFilter
+                :dateProperties="dateProperties"
+                @toggle-checkbox="onlyOneCheckbox"
+              />
+              <ProvidersFilter
+                :providersFilterProps="providersFilterProps"
+                @toggle-checkbox="onlyOneCheckbox"
+              />
             </form>
           </div>
         </div>
@@ -172,38 +127,6 @@ form {
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-}
-
-select {
-  font-size: 1.7rem;
-}
-
-form span {
-  font-size: 1.7rem;
-}
-
-.providers-section {
-  width: 100%;
-}
-
-.providers-dropdown {
-  font-size: 1.4rem;
-  margin: 1.4rem;
-}
-
-.providers-filtering-conditions {
-  display: flex;
-  justify-content: center;
-  gap: 5rem;
-  font-size: 1.4rem;
-  font-style: italic;
-  margin: 1rem 0;
-}
-
-.providers-filtering-conditions > div {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .modal-footer {
