@@ -20,11 +20,12 @@
 > - Run `npm run build` to build the application
 > - Run `npm run dev` to start the server
 > - Go to [http://localhost:5000](http://localhost:5000) to interact with
->   the build version of the app which statically being served by the backend.
+>   the build version of the app which is statically being served by the backend.
 > - If you want to play with code and see the changes
 >   live go to [http://localhost:3000](http://localhost:3000)
-> - To build the changes made (only necessary if you then want to
->   see the changes live in the build version of the app) run `npm run build` again.
+> - Everytime you make changes to the code and want to see the changes live
+>   in the "build version" of the application be sure to run
+>   `npm run build` and start the server again.
 
 <hr />
 
@@ -44,3 +45,12 @@
 
 > To see the app's API documentation go to [http://localhost:5000/api-docs](http://localhost:5000/api-docs).
 > while the server is running.
+
+## Author
+
+👤 **Adorn Choga**
+
+- Website: [adorn-choga](https://adorn-choga.netlify.app)
+- GitHub: [AdornChoga](https://github.com/AdornChoga)
+- Twitter: [@adornchoga](https://twitter.com/adorn_choga)
+- LinkedIn: [@adornchoga](https://www.linkedin.com/in/adorn-choga)
