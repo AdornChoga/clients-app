@@ -14,6 +14,11 @@ const { fetchClients } = clientStore;
 
 fetchProviders();
 fetchClients();
+
+const refresh = async () => {
+  await fetchProviders();
+  await fetchClients();
+};
 </script>
 
 <template>
@@ -29,12 +34,12 @@ fetchClients();
           New Client
         </button>
       </div>
-      <div class="d-flex gap-3">
+      <div class="d-flex gap-3 align-items-center">
         <SortDropdown />
         <div>
           <button
             type="button"
-            class="btn btn-secondary p-2"
+            class="btn btn-secondary"
             data-bs-toggle="modal"
             data-bs-target="#filterModal"
           >
@@ -44,6 +49,16 @@ fetchClients();
           </button>
           <FilterModal />
         </div>
+        <button
+          type="button"
+          class="refresh"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Refresh"
+          @click="refresh"
+        >
+          <i class="fa-solid fa-rotate"></i>
+        </button>
       </div>
     </div>
     <div v-if="loading" class="spinner-border loading-spinner" role="status">
@@ -79,6 +94,13 @@ fetchClients();
   font-size: 1.9rem;
   background-color: #f3f3f3;
   border-radius: 0.7rem;
+}
+
+.refresh {
+  font-size: 2rem;
+  color: #6c757d;
+  border: none;
+  background: none;
 }
 
 .loading-spinner {
