@@ -18,6 +18,9 @@ fetchClients();
 const refresh = async () => {
   await fetchProviders();
   await fetchClients();
+  Object.keys(clientStore.fieldSort).forEach(
+    (key) => (clientStore.fieldSort[key] = ''),
+  );
 };
 </script>
 
