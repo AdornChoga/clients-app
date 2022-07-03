@@ -24,7 +24,7 @@ export const useClientStore = defineStore({
       phone: '',
       providers: '',
     },
-    dateSort: '',
+    dateSort: 'createdAtAsc',
   }),
   actions: {
     setClientError(error) {

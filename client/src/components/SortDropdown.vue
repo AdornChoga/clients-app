@@ -68,5 +68,6 @@ li > button {
 .date-sort-active {
   border-left: 0.5rem solid #35748a;
   border-right: 0.5rem solid #35748a;
+  background-color: #d9e3eb;
 }
 </style>

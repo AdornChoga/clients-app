@@ -21,6 +21,7 @@ const refresh = async () => {
   Object.keys(clientStore.fieldSort).forEach(
     (key) => (clientStore.fieldSort[key] = ''),
   );
+  clientStore.dateSort = 'createdAtAsc';
 };
 </script>
 
