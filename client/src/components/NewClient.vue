@@ -40,6 +40,8 @@ const resetInputData = () => {
   properties.email = '';
   properties.phone = '';
   clientProviders = [];
+  const checkboxes = document.getElementsByName('newClientProvider');
+  checkboxes.forEach((checkbox) => (checkbox.checked = false));
 };
 
 const submitClient = async () => {

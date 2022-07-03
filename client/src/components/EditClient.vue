@@ -19,6 +19,7 @@ const modal = {
 };
 
 let properties = reactive({
+  id: props.client._id,
   name: props.client.name,
   email: props.client.email,
   phone: props.client.phone,
@@ -75,6 +76,19 @@ const cancelEditing = () => {
   properties.name = props.client.name;
   properties.email = props.client.email;
   properties.phone = props.client.phone;
+  const checkboxes = document.getElementsByName(
+    `editClientProvider${props.client._id}`,
+  );
+  const clientProvidersIDs = props.client.providers.map(
+    (provider) => provider._id,
+  );
+  checkboxes.forEach((checkbox) => {
+    if (clientProvidersIDs.includes(checkbox.id)) {
+      checkbox.checked = true;
+    } else {
+      checkbox.checked = false;
+    }
+  });
 };
 </script>
 

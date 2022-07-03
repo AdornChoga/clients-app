@@ -7,6 +7,9 @@ const props = defineProps({
   clientProviders: {
     type: Array,
   },
+  clientId: {
+    type: String,
+  },
 });
 
 const { providers } = storeToRefs(useProviderStore());
@@ -28,6 +31,11 @@ const checkedBox = (provider) => {
         <div>
           <input
             class="form-check-input"
+            :name="
+              clientProviders
+                ? `editClientProvider${clientId}`
+                : 'newClientProvider'
+            "
             type="checkbox"
             :checked="checkedBox(provider)"
             :id="provider._id"

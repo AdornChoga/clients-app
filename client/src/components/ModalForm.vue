@@ -5,7 +5,7 @@ import { useClientStore } from '../stores/client';
 import { useProviderStore } from '../stores/provider';
 import Providers from './Providers.vue';
 
-defineProps({
+const props = defineProps({
   modal: {
     type: Object,
     required: true,
@@ -123,6 +123,7 @@ const addProvider = async () => {
                   <Providers
                     @toggle-provider="checkboxEmitter"
                     :clientProviders="properties.providers"
+                    :clientId="properties.id"
                   />
                 </div>
                 <button
