@@ -76,6 +76,8 @@ const cancelEditing = () => {
   properties.name = props.client.name;
   properties.email = props.client.email;
   properties.phone = props.client.phone;
+  setProviderError('');
+  setClientError('');
   const checkboxes = document.getElementsByName(
     `editClientProvider${props.client._id}`,
   );

@@ -40,6 +40,8 @@ const resetInputData = () => {
   properties.email = '';
   properties.phone = '';
   clientProviders = [];
+  setProviderError('');
+  setClientError('');
   const checkboxes = document.getElementsByName('newClientProvider');
   checkboxes.forEach((checkbox) => (checkbox.checked = false));
 };
@@ -50,8 +52,6 @@ const submitClient = async () => {
   try {
     await createClient(payload);
     resetInputData();
-    setProviderError('');
-    setClientError('');
     $('#newClientModal').modal('toggle');
   } catch ({ response }) {
     const { error } = response.data;
