@@ -10,17 +10,6 @@ export default class ClientsApi {
       res.status(400).send({ error: err.message });
     }
   }
-  static async fetchClient(req, res) {
-    try {
-      const client = await Client.findById(ObjectId(req.params.id));
-      if (client) return res.status(200).send(client);
-      res
-        .status(404)
-        .send({ error: 'The client with the specified id could not be found' });
-    } catch (err) {
-      res.status(400).send({ error: err.message });
-    }
-  }
   static async createClient(req, res) {
     try {
       const newClient = await Client.create(req.body);

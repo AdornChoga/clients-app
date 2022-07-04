@@ -73,34 +73,6 @@
 
 /**
  * @swagger
- * /clients/{id}:
- *   get:
- *     summary: Returns a client with the specified id
- *     tags: [Clients]
- *     parameters:
- *       - in: path
- *         name: id
- *         type: string
- *         required: true
- *     responses:
- *       200:
- *         description: The client was successfully retrieved
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#components/schemas/Client'
- *       400:
- *         description: The server returned an error
- *       404:
- *         description: The client could not be found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#components/schemas/Client404'
- */
-
-/**
- * @swagger
  * /clients:
  *   post:
  *     summary: Creates a new client
