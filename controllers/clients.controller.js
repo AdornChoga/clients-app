@@ -23,7 +23,7 @@ export default class ClientsApi {
       await Client.updateOne({ _id: ObjectId(req.params.id) }, req.body);
       const updatedClient = await Client.findById(ObjectId(req.params.id));
       if (updatedClient) {
-        return res.status(200).send({ client: updatedClient });
+        return res.status(200).send(updatedClient);
       }
       res
         .status(404)

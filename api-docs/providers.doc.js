@@ -69,15 +69,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               required:
- *                 - message:
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Confirmation of a successfull provider creation
- *               example:
- *                 message: The provider was successfully created
+ *               $ref: '#components/schemas/Provider'
  *       400:
  *          description: Error in request body
  */

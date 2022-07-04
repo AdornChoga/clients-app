@@ -43,7 +43,7 @@ export const useProviderStore = defineStore({
         if (response.status === 200) {
           this.providers = this.providers.map((provider) => {
             if (provider._id === payload._id) {
-              return { ...provider, ...payload };
+              return { ...provider, ...response.data };
             }
             return provider;
           });

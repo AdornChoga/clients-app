@@ -9,7 +9,6 @@
  *         - name
  *         - email
  *         - phone
- *         - providers
  *       properties:
  *         _id:
  *           type: string
@@ -28,6 +27,12 @@
  *           items:
  *             type: object
  *           description: The providers of the client
+ *         createdAt:
+ *           type: string
+ *           description: The date and time when the client was created
+ *         updatedAt:
+ *           type: string
+ *           description: The date and time when the client was updated
  *       example:
  *         name: 'Example Client'
  *         email: 'exampleclient@email.com'
