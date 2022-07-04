@@ -16,7 +16,7 @@ export default class ClientsApi {
       if (client) return res.status(200).send(client);
       res
         .status(404)
-        .send({ error: 'The client with the specified could not be found' });
+        .send({ error: 'The client with the specified id could not be found' });
     } catch (err) {
       res.status(400).send({ error: err.message });
     }
@@ -38,7 +38,7 @@ export default class ClientsApi {
       }
       res
         .status(404)
-        .send({ error: 'The client with the specified could not be found' });
+        .send({ error: 'The client with the specified id could not be found' });
     } catch (err) {
       res.status(400).send({ error: err.message });
     }
@@ -53,7 +53,7 @@ export default class ClientsApi {
       }
       res
         .status(404)
-        .send({ error: 'The client with the specified could not be found' });
+        .send({ error: 'The client with the specified id could not be found' });
     } catch (err) {
       res.status(400).send({ error: err.message });
     }

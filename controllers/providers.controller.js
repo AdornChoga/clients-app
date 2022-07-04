@@ -28,7 +28,7 @@ export default class ProvidersApi {
       }
       res
         .status(404)
-        .send({ error: 'The provider with the specified could not be found' });
+        .send({ error: 'The provider with the specified id could not be found' });
     } catch (err) {
       res.status(400).send({ error: err.message });
     }
@@ -48,7 +48,7 @@ export default class ProvidersApi {
           .send({ message: 'The provider was deleted successfully' });
       }
       res.status(404).send({
-        error: 'The provider with the specified could not be found',
+        error: 'The provider with the specified id could not be found',
       });
     } catch (err) {
       res.status(400).send({ error: err.message });
